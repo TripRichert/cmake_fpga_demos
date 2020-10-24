@@ -1,0 +1,45 @@
+= cmake_fpga_demos
+
+This repo is a collection of demos and proof of concepts using the cmake_utils and viv-prj-gen repos.
+
+This project is unlikely to be well documented or stable.  These demos may not follow best practices. 
+
+== bd_test
+
+Demonstrates a block diagram project, including generating a custom ip (xact) for vivado to use in the block diagram.
+
+== bd_test_xci
+
+Demonstrates that an xci can be added to the project and used in ip
+
+== blinky
+
+A proof of concept that edalize can be used in cmake in parallel to viv-prj-gen, both for synthesis and simulation
+
+== blinky2
+
+A proof of concept that edalize can bused in cmake in parallel with viv-prj-gen, both for synthesis and simulation.  Gets python to read file lists in, rather than receive file list from cmake.
+
+== corundum
+
+demo of bit file generation using viv-prj-gen
+
+== cpyxci_test
+
+copies xci file so that it can be modified for use with a different xilinx part
+
+== gen_deptree_file
+
+Proof of concept that ghdl can be used to generate a deptree file that cmake_utils uses to produce lists of files.
+
+== seldridge-verilog
+
+demo demonstrating generation of vivado development project for verilog source code
+
+== simple
+
+demo demonstrating bitfile generation from vhdl source
+
+== vhdl-extras
+
+demo demonstrating generation of vivado development project for vhdl source code
