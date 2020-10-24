@@ -1,0 +1,6 @@
+[submodule "cmake_utils"]
+	path = cmake_utils
+	url = https://github.com/TripRichert/cmake_utils
+[submodule "viv-prj-gen"]
+	path = viv-prj-gen
+	url = https://github.com/TripRichert/viv-prj-gen
