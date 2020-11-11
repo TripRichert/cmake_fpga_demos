@@ -1,0 +1,69 @@
+= Supporting multiple Zynq boards with one block diagram
+
+Often, developers will use similar projects for multiple boards.
+
+Sometimes, reusing the same block diagram for multiple boards would be useful.
+
+Unfortunately, Vivado makes this very difficult.  This is an attempt at a proof of concept demonstrating that reusing block diagrams for zynq projects is feasible in some situations.
+
+== presets
+
+One of the main problems is that the "presets" for default values that can and should be changed on many designs are mixed in with presets that shouldn't be touched.
+
+Two commonly used development boards, the zedboard and the microzed, both share the same arm processors.  They have similar fpga resources.
+
+But, they have different path delays to memory and differently sized memory.
+
+Preset settings are available for both boards that set those path delays, but the presets also set settings like the fabric clock rates that the user likely wants control over.
+
+We have two options.  We can get vivado to set things back to the preset, then patch back in our changes.  Or, we can write a script that doesn't touch our custom values.  This document describes the second approach.
+
+== figuring out a baseline
+
+Create a simple project for each board that you want to patch between.  Instantiate a processor block, and configure it with the board's preset.
+
+We can now export these settings to a human readable file with the command
+
+[source, tcl]
+report_property -all [get_ips] -file myboardproperties_filename.txt
+
+We can compare these files to identify differences in the presets.
+
+We can also run this command after we patch a block diagram to see if the settings changes as we expected.
+
+== the implementation
+
+=== the ugly part
+
+the plan is to run the patch after generating the block diagram.
+
+In order to run the block diagram script, the project needs to be set to the partname of the parts referenced in the script.
+
+If we have any ip, we need the ip_repo to be set to a directory that has the ip set up for that partname.
+
+I don't have a clean way of accomplishing this yet.  For now, this document assumes no IP.  Set up the project using the boardname and partname that the block diagram generation is for, not the one patched.
+
+This needs to be addressed and fixed.
+
+=== changing the partname
+
+To do: We need a script to run before the block diagram is generated to set the project partname and ip directory to one that works with the block diagram generation script.
+
+In the post block diagram generation script, set the partname and the boardname to the correct partname and boardname (the part and board you are patching to).
+
+=== changing a processing system setting
+
+We can use the "set_property" function with the "-dict" option to set a property within a processing system cell.
+
+For example, if we wanted to change the package name from the zedboard's 484 to the microzed's 400, we could use the command
+
+[source, tcl]
+set_property -dict [list CONFIG.PCW_PACKAGE_NAME {clg400}] [get_bd_cells processing_system7_0]
+
+Change all the settings you identified in the comparison.
+
+=== check your work
+
+Once you've created the patch file, run it after the block generation, then use report_property to make sure that all the properties got changed as expected.
+
+
