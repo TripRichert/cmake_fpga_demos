@@ -1,6 +1,10 @@
 set_property board_part em.avnet.com:zed:part0:1.4 [current_project]
 set_property "part" "XC7Z020-1CLG484" [current_project]
 
+if {[diction::checkForKeyPair fake_ip_repo_dirs {*}$argv]} {
+    set_property ip_repo_paths [diction::getDef fake_ip_repo_dirs {*}$argv] [current_project]
+}
+
 source [diction::getDef bdscript {*}$argv]
 
 set_property "part" "$partname" [current_project]
@@ -9,6 +13,14 @@ if {[diction::checkForKeyPair boardname {*}$argv]} {
     set_property "board_part" "[diction::getDef boardname {*}$argv]" [current_project]
 } else {
     set_property "board_part" {} [current_project]
+}
+
+if {[diction::checkForKeyPair fake_ip_repo_dirs {*}$argv]} {
+    if {[diction::checkForKeyPair ip_repo_dirs {*}$argv]} {
+	set_property ip_repo_paths [diction::getDef ip_repo_dirs {*}$argv] [current_project]
+    } else {
+	set_property ip_repo_paths {} [current_project]
+    }
 }
 
 upgrade_ip [get_ips  system_processing_system7_0_0] -log ip_upgrade.log

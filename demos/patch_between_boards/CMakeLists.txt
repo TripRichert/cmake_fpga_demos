@@ -8,7 +8,7 @@ project(bd_project)
 set(partname "XC7Z020-1CLG484")
 set(boardname "em.avnet.com:zed:part0:1.4")
 
-include(../../viv-prj-gen/vivgen_functions.cmake)
+include(../../../viv-prj-gen/vivgen_functions.cmake)
 include(../../cmake_utils/file_functions.cmake)
 
 
@@ -42,6 +42,7 @@ get_filename_component(wrapconvscript scripts/zed_wrapper.tcl REALPATH)
 add_vivado_bd_devel_project(
   PRJNAME zed_bdprj
   PARTNAME ${partname}
+  FAKEPARTNAME "XC7Z020-1CLG484"
   BDSCRIPT ${bdscript}
   BOARDNAME ${boardname}
   BDSCRIPTWRAPPER ${wrapconvscript}
