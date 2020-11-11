@@ -33,16 +33,18 @@ add_custom_target(the_hdf
   DEPENDS ${hdf_target}
   )
 
-#set(partname "xc7z020clg400-1")
-#set(boardname "em.avnet.com:microzed_7020:part0:1.1")
+set(partname "xc7z020clg400-1")
+set(boardname "em.avnet.com:microzed_7020:part0:1.1")
 
 get_filename_component(convscript scripts/zedboard2uzed7020.tcl REALPATH)
+get_filename_component(wrapconvscript scripts/zed_wrapper.tcl REALPATH)
 
 add_vivado_bd_devel_project(
   PRJNAME zed_bdprj
   PARTNAME ${partname}
   BDSCRIPT ${bdscript}
   BOARDNAME ${boardname}
+  BDSCRIPTWRAPPER ${wrapconvscript}
   POSTBDGENSCRIPTS ${convscript}
   )
 
