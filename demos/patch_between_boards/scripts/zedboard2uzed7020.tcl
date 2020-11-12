@@ -66,3 +66,4 @@ set_property -dict [list CONFIG.PCW_UIPARAM_DDR_ROW_ADDR_COUNT {15}] [get_bd_cel
 set_property -dict [list CONFIG.PCW_UIPARAM_DDR_T_FAW {40.0}] [get_bd_cells processing_system7_0]
 set_property -dict [list CONFIG.PCW_UIPARAM_DDR_T_RAS_MIN {35.0}] [get_bd_cells processing_system7_0]
 set_property -dict [list CONFIG.PCW_UIPARAM_DDR_T_RC {48.75}] [get_bd_cells processing_system7_0]
+

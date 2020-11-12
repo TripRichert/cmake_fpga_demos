@@ -11,6 +11,20 @@ set(boardname "em.avnet.com:zed:part0:1.4")
 include(../../viv-prj-gen/vivgen_functions.cmake)
 include(../../cmake_utils/file_functions.cmake)
 
+get_filename_component(hdldepfile hdl/deptree.txt REALPATH)
+add_dependency_tree_file(placeholder ${hdldepfile})
+
+get_filename_component(topfilename hdl/myip/myip_v1_0.vhd REALPATH)
+get_list_from_dependency_tree(myipfiles ${topfilename})
+
+add_vivado_xact_ip(
+  IPNAME myip
+  PARTNAME ${partname}
+  SUBDIRNAME test
+  VHDLFILES ${myipfiles}
+  TOPNAME myip_v1_0
+  IP_STAMPOUTPUT ipxact_output
+  )
 
 get_filename_component(bdscript scripts/system_bd.tcl REALPATH)
 
@@ -19,6 +33,7 @@ add_vivado_bd_devel_project(
   PARTNAME ${partname}
   BDSCRIPT ${bdscript}
   BOARDNAME ${boardname}
+  DEPENDS ${ipxact_output}
   )
 
 add_vivado_bd_hdf(
@@ -27,6 +42,7 @@ add_vivado_bd_hdf(
   BDSCRIPT ${bdscript}
   BOARDNAME ${boardname}
   HDFFILE_OUTPUT hdf_target
+  DEPENDS ${ipxact_output}
   )
 
 add_custom_target(the_hdf
@@ -39,6 +55,15 @@ set(boardname "em.avnet.com:microzed_7020:part0:1.1")
 get_filename_component(convscript scripts/zedboard2uzed7020.tcl REALPATH)
 get_filename_component(wrapconvscript scripts/zed_wrapper.tcl REALPATH)
 
+add_vivado_xact_ip(
+  IPNAME myip
+  PARTNAME ${partname}
+  SUBDIRNAME test
+  VHDLFILES ${myipfiles}
+  TOPNAME myip_v1_0
+  IP_STAMPOUTPUT zedipxact_output
+  )
+
 add_vivado_bd_devel_project(
   PRJNAME zed_bdprj
   PARTNAME ${partname}
@@ -47,6 +72,7 @@ add_vivado_bd_devel_project(
   BOARDNAME ${boardname}
   BDSCRIPTWRAPPER ${wrapconvscript}
   POSTBDGENSCRIPTS ${convscript}
+  DEPENDS ${ipxact_output} ${zedipxact_output}
   )
 
 ###############################################################################
